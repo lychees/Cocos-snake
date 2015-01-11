@@ -4,11 +4,14 @@ USING_NS_CC;
 using namespace CocosDenshion;
 using namespace std;
 
+
+// 菜单
+
 Scene* HelloWorld::createScene()
 {
     // 'scene' is an autorelease object
     auto scene = Scene::create();
-    
+
     // 'layer' is an autorelease object
     auto layer = HelloWorld::create();
 
@@ -28,41 +31,26 @@ bool HelloWorld::init()
     {
         return false;
     }
-    
+
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-
-    /*auto closeItem = MenuItemImage::create(
-                                           "CloseNormal.png",
-                                           "CloseSelected.png",
-                                           CC_CALLBACK_1(HelloWorld::menuCallback, this));
-    
-	closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
-                                origin.y + closeItem->getContentSize().height/2));*/
-
-    // create menu, it's an autorelease object
-    
-	/*auto menu = Menu::create(closeItem, NULL);
-    menu->setPosition(Vec2::ZERO);
-    this->addChild(menu, 1);*/
-
-    auto l1 = Label::createWithTTF("Start", "fonts/Marker Felt.ttf", 32);        
-    //l1->setPosition(Vec2(origin.x + visibleSize.width/2, origin.y + visibleSize.height / 7*4));		
+    auto l1 = Label::createWithTTF("Start", "fonts/Marker Felt.ttf", 32);
+    //l1->setPosition(Vec2(origin.x + visibleSize.width/2, origin.y + visibleSize.height / 7*4));
 	auto ll1 = MenuItemLabel::create(l1, CC_CALLBACK_1(HelloWorld::menuCallbackStart, this));
 	ll1->setPosition(Vec2(0, -0));
 	ll1->setName("Start");
 
-	auto l2 = Label::createWithTTF("Option", "fonts/Marker Felt.ttf", 32);	
+	auto l2 = Label::createWithTTF("Option", "fonts/Marker Felt.ttf", 32);
 	auto ll2 = MenuItemLabel::create(l2, CC_CALLBACK_1(HelloWorld::menuCallbackOption, this));
 	ll2->setPosition(Vec2(0, -50));
 	ll2->setName("Option");
 
-	auto l3 = Label::createWithTTF("Exit", "fonts/Marker Felt.ttf", 32);	
-	auto ll3 = MenuItemLabel::create(l3, CC_CALLBACK_1(HelloWorld::menuCallbackExit, this));	
+	auto l3 = Label::createWithTTF("Exit", "fonts/Marker Felt.ttf", 32);
+	auto ll3 = MenuItemLabel::create(l3, CC_CALLBACK_1(HelloWorld::menuCallbackExit, this));
 	ll3->setPosition(Vec2(0, -100));
 	ll3->setName("Exit");
-    
+
 	auto menu = Menu::create(ll1, ll2, ll3, NULL);
 	this->addChild(menu);
     return true;
@@ -82,15 +70,14 @@ void HelloWorld::menuCallbackExit(Ref* p)
 }
 
 
-
-
+// 游戏逻辑
 
 const int dx[] = { 0, 0, -1, 1 };
 const int dy[] = { 1, -1, 0, 0 };
 // 上 下 左 右
 
-int MapX = 64, MapY = 64, Offset = 5, CellSize = 4, InitDlen = 10, FruteDlen = 5;
-int GameSpeed = 50, SnakeInitSpeed = 5;
+int MapX = 128, MapY = 128, Offset = 5, CellSize = 4, InitDlen = 10, FruteDlen = 5;
+int GameSpeed = 60, SnakeInitSpeed = 2;
 
 bool Deaded = false;
 
@@ -137,7 +124,7 @@ bool Snake::isDead(){
 void Snake::move(){
 
 	counter += 1;
-	CCLOG("%d %d", counter, speed);
+	//CCLOG("%d %d", counter, speed);
 	if (counter != speed) return;
 	counter = 0;
 
@@ -255,7 +242,7 @@ bool Game::init(){
 	}
 
 	auto size = Director::getInstance()->getWinSize();
-	setPosition(Point(10, 45));
+	setPosition(Point(40, 45)); // 需要修改，Pause 应该锚固在中间。。这一层不应该位移。
 
 	auto draw = DrawNode::create();
 	Point lt = Point(-Offset, CellSize*MapY), rt = Point(CellSize*MapX, CellSize*MapY),
@@ -273,9 +260,9 @@ bool Game::init(){
 	frute = Frute::create(); frute->gen();
 	this->addChild(frute);
 
-	auto labelScore = Label::create("Score: 0", "宋体", 14);
+	auto labelScore = Label::create("Score: 0", "宋体", 32);
 	labelScore->setTag(1); score = 0;
-	labelScore->setPosition(Point(size.width - 80, size.height - 50));
+	labelScore->setPosition(Point(size.width - 150, size.height - 100 ));
 	this->addChild(labelScore);
 
 	auto labelGameOver = Label::create("Game Over", "宋体", 42);
